@@ -1,0 +1,56 @@
+package ${basePackage}.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import ${basePackage}.model.BaseModel;
+
+<#list imports as i>
+import ${i};
+</#list>
+
+/**
+ * ${Model}
+ */
+@Entity // 标识这是一个与数据库映射的实体
+@Table(name = "${table}") // 指定与数据库映射的表名
+public class ${Model} extends BaseModel {
+	<#list mf.names as n>
+	/**
+	 * ${mf.comments[n_index]}
+	 */
+		<#if n == 'id'>
+	@Id
+	@GeneratedValue
+		</#if> 
+		<#if mf.types[n_index] == 'java.util.Date'>
+	@DateTimeFormat(pattern = "${mf.dateFormats[n_index]}")	
+		</#if>
+	<#if mf.types[n_index]?contains('${basePackage}')>
+	@ManyToOne
+	@JoinColumn(name = "${mf.dbNames[n_index]}")
+	<#elseif !mf.types[n_index]?contains('${basePackage}')>	
+	@Column(name = "${mf.dbNames[n_index]}")
+	</#if>    
+    private ${shortTypes[n_index]} ${n};
+	</#list>
+	<#list mf.names as n>
+	
+	/** 
+	 * 获取值：${mf.comments[n_index]}
+	 */
+	public ${shortTypes[n_index]} get${upperNames[n_index]}() {
+    	return ${n};
+    }
+	
+	/** 
+	 * 设置值：${mf.comments[n_index]}
+	 */    
+    public void set${upperNames[n_index]}(${shortTypes[n_index]} ${n}) {
+    	this.${n} = ${n};
+    }
+	</#list>
+	
+}

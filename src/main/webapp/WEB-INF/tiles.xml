@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+	
+	<definition name="layout" template="/WEB-INF/jsp/common/layout.jsp"/>
+
+	<definition name="main" extends="layout">
+		<put-attribute name="title" value="Welcome to Petcare" type="string" />
+		<put-attribute name="header" value="/WEB-INF/jsp/common/nav.jsp"></put-attribute>
+		<put-attribute name="menu" value="/WEB-INF/jsp/common/menu.jsp"/>
+		<put-attribute name="content" value=""/>
+		<put-attribute name="footer" value="/WEB-INF/jsp/common/footer.jsp"/>
+	</definition>
+	
+	<definition name="login" extends="main">
+		<put-attribute name="content" value="/WEB-INF/jsp/login.jsp"/>
+	</definition>
+
+</tiles-definitions>

@@ -1,0 +1,93 @@
+package ${basePackage}.dao;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.stereotype.Repository;
+<#list mf.names as na>
+        	<#if mf.asQueries[na_index]>
+        		<#if mf.types[na_index] == 'java.lang.String'>
+import org.apache.commons.lang3.StringUtils;
+<#break/>
+        		</#if>
+        	</#if>
+</#list>        	
+	
+import ${basePackage}.dao.GenericDAOHibernate;
+import ${basePackage}.model.${Model};
+import ${basePackage}.model.${Model};
+import ${basePackage}.support.Page;
+
+/**
+ * dao的实现类必须加上@Repository
+ * 继承自GenericDAOHibernate，以重用基本的增删改方法。
+ * @author Kewen.Zhu
+ *
+ */
+@Repository
+public class ${Model}DAO extends GenericDAOHibernate<${Model}> {
+
+    /**
+     * 查询方法，传入一个dto是为了灵活构建查询条件，避免创建多个查询方法。
+     * page对象是用来分页的，一般可以不用管
+     * @param dto
+     * @param page
+     * @return
+     */
+    public List<${Model}> find(${Model} dto, Page page) {
+        StringBuilder hql = new StringBuilder();
+        List<Object> paras = new ArrayList<Object>();
+        hql.append("From ${Model} n where 1 = 1 ");
+        if (dto.getId() != null) {
+            hql.append(" and n.id = ? ");
+            paras.add(dto.getId());
+        }
+        <#list mf.names as na>
+        	<#if mf.asQueries[na_index]>
+        		<#if mf.types[na_index] == 'java.lang.String'>
+        			<#if mf.asLikeQueries[na_index]>
+        if (StringUtils.isNotBlank(dto.get${upperNames[na_index]}())) {
+            hql.append(" and n.${na} like ? ");
+            paras.add("%" + dto.get${upperNames[na_index]}() + "%");
+        }					
+        			<#elseif !mf.asLikeQueries[na_index]>
+        if (StringUtils.isNotBlank(dto.get${upperNames[na_index]}())) {
+            hql.append(" and n.${na} = ? ");
+            paras.add(dto.get${upperNames[na_index]}());
+        }		
+        			</#if>
+        		<#elseif  mf.types[na_index] != 'java.lang.String'>
+        			<#if mf.types[na_index]?contains('${basePackage}')>
+        if (dto.get${upperNames[na_index]}() != null) {
+        	if (dto.get${upperNames[na_index]}().getId() != null) {
+	            hql.append(" and n.${na}.id = ? ");
+	            paras.add(dto.get${upperNames[na_index]}().getId());
+        	}
+        }			
+        			<#elseif !mf.types[na_index]?contains('${basePackage}')>
+        if (dto.get${upperNames[na_index]}() != null) {
+            hql.append(" and n.${na} = ? ");
+            paras.add(dto.get${upperNames[na_index]}());
+        }
+        			</#if>
+        		</#if>
+        	</#if>
+        </#list>
+        return super.find(hql.toString(), paras.toArray(), page);
+    }
+    
+    /**
+     * 只找出一条符合条件的记录
+     * @param dto
+     * @return
+     */
+    public ${Model} findOne(${Model} dto) {
+		Page page = new Page();
+		page.setNumPerPage(1);
+		page.setPageNum(1);
+		
+		List<${Model}> list = this.find(dto, page);
+	    return CollectionUtils.isEmpty(list) ? null : list.get(0);
+    }
+}
