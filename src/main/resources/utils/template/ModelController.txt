@@ -1,0 +1,99 @@
+package {basePackage}.web.controller;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import {basePackage}.common.CallbackType;
+import {basePackage}.common.StatusCode;
+import {basePackage}.dto.JsonResultDTO;
+import {basePackage}.dto.{Model}DTO;
+import {basePackage}.service.{Model}Service;
+import {basePackage}.support.Page;
+
+
+/**
+ * 控制层，都要加上Controller，并且继承BaseController
+ * RequestMapping表示接受什么样的请求，类上面的RequestMapping加上
+ * 方法上面的RequestMapping就是接受的完整的请求，如detail方法接收的请求是/{model}/detail，没有后缀
+ * @author Kewen.Zhu
+ *
+ */
+@Controller
+@RequestMapping(value = "/{model}")
+public class {Model}Controller extends BaseController {
+
+	/**
+	 * @Autowired 表示自动注入spring管理的bean，不需要写getter和setter就能注入
+	 */
+	@Autowired
+	private {Model}Service {model}Service;
+	
+	/**
+	 * @param map
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/detail")
+	public String detail(Map<String, Object> map, Long id) {
+		if (id != null) {
+			{Model}DTO dto = {model}Service.load(id);
+			map.put("{model}", dto);
+		}
+		return "admin/{model}/detail";
+	}
+	
+	/**
+	 * 如果dto.getId不为空，则为更新，如果为空，则是保存.
+	 * @ResponseBody 表示这是一个接收json请求的方式，返回值 不会跳转到哪个页面，返回值为void。
+	 * 要传给页面的json值，请调用父类BaseController提供的三个方法。
+	 * @param dto
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/save")
+	public void save(HttpServletResponse response, {Model}DTO dto) throws IOException {
+		if (dto.getId() == null) {
+			{model}Service.save(dto);
+		} else {
+			{model}Service.update(dto);
+		}
+		JsonResultDTO resultDTO = new JsonResultDTO();
+		resultDTO.setStatusCode(StatusCode.OK.code());
+		resultDTO.setMessage("操作成功");
+		resultDTO.setCallbackType(CallbackType.closeCurrent);
+		writeJsonResult(response, resultDTO);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/delete") 
+	public void delete(HttpServletResponse response, Long id) throws IOException {
+		{model}Service.deleteById(id);
+		
+		JsonResultDTO resultDTO = new JsonResultDTO();
+		resultDTO.setStatusCode(StatusCode.OK.code());
+		resultDTO.setMessage("操作成功");
+		resultDTO.setCallbackType(CallbackType.closeCurrent);
+		writeJsonResult(response, resultDTO);
+	}
+	
+	@RequestMapping(value = "/list")
+	public String list(Map<String, Object> map, {Model}DTO dto, Page page) {
+		List<{Model}DTO> dtos = {model}Service.list(dto, page);
+		map.put("{model}s", dtos);
+		return "admin/{model}/list";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/find")
+	public void find() {
+		
+	}
+	
+}
