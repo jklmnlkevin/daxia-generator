@@ -12,6 +12,13 @@
 <body>
 	<div class="container222">
 		<div class="row">
+			<div class="col-md-12">
+				模板类型：
+				<select name="templateType" id="templateType">
+					<option value="easyui">Easy UI</option>
+					<option value="dwz">DWZ</option>
+				</select>
+			</div>
 			<div class="col-md-4">
 				<div class="form-group">
 				    <label class="col-md-4 control-label">表名</label>

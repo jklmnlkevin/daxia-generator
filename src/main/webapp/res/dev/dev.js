@@ -38,7 +38,7 @@ var trContent = $('.firstTr').html();
 		});
 
 	function cleanTableInfo() {
-		$('#table > tbody > tr[class!=firstTr]').remove();
+		$('#table > tbody > tr').not('.firstTr').remove();
 	}	
 	function getTableInfo() {
 		var table = $('input[name=table]').val();
@@ -134,7 +134,7 @@ var trContent = $('.firstTr').html();
 	
 	function getParams() {
 		var params = {};
-		
+		params.templateType = $('#templateType').val();
 		// String model,
 		params.model = $('input[name=model]').val();
     	// String modelChineseName,

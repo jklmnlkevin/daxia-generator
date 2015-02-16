@@ -72,6 +72,7 @@ public class DevController {
 	    String menuTable,
 	    String authorityTable,
 	    String roleAuthorityTable,
+	    String templateType,
 	    @RequestParam("types[]") String[] types,          
 	    @RequestParam("names[]") String[] names,
 	    @RequestParam("dbNames[]") String[] dbNames,
@@ -152,6 +153,7 @@ public class DevController {
                 upperNames.add(n.substring(0, 1).toUpperCase() + n.substring(1));
             }
             map.put("upperNames", upperNames);
+            map.put("templateType", templateType);
             
             List<GenerateType_K> generateTypes = Lists.newArrayList();
             generateTypes.add(GenerateType_K.Model);
