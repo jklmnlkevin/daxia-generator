@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,6 +20,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -73,6 +75,7 @@ public class DevController {
 	    String authorityTable,
 	    String roleAuthorityTable,
 	    String templateType,
+	    String generateContents, // 逗号隔开
 	    @RequestParam("types[]") String[] types,          
 	    @RequestParam("names[]") String[] names,
 	    @RequestParam("dbNames[]") String[] dbNames,
@@ -156,13 +159,29 @@ public class DevController {
             map.put("templateType", templateType);
             
             List<GenerateType_K> generateTypes = Lists.newArrayList();
-            generateTypes.add(GenerateType_K.Model);
-            generateTypes.add(GenerateType_K.ModelDAO);
-            generateTypes.add(GenerateType_K.ModelService);
-            generateTypes.add(GenerateType_K.AdminModelController);
-            generateTypes.add(GenerateType_K.model_list);
-            generateTypes.add(GenerateType_K.model_detail);
-            generateTypes.add(GenerateType_K.model_search);
+            
+            List<String> generateList = Arrays.asList(generateContents.split(","));
+            
+            if (generateList.contains("model")) {
+                generateTypes.add(GenerateType_K.Model);
+            }
+            if (generateList.contains("dao")) {
+                generateTypes.add(GenerateType_K.ModelDAO);
+            }
+            if (generateList.contains("service")) {
+                generateTypes.add(GenerateType_K.ModelService);
+            }
+            if (generateList.contains("controller")) {
+                generateTypes.add(GenerateType_K.AdminModelController);
+            }
+            if (generateList.contains("list")) {
+                generateTypes.add(GenerateType_K.model_list);
+            }
+            if (generateList.contains("detail")) {
+                generateTypes.add(GenerateType_K.model_detail);
+            }
+            // generateTypes.add(GenerateType_K.model_search);
+            
             TemplateUtils_K.generate(generateTypes.toArray(new GenerateType_K[] {}), map, projectPath);
 
             Connection connection = getConnection(db, dbUsername, dbPassword);

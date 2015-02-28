@@ -69,6 +69,20 @@
 				      <input type="text" class="form-control" name="basePackage" id="basePackage" placeholder="基本的包名" value="${basePackage }"/>
 				    </div>
 				</div>
+				
+				<div class="form-group">
+				    <label class="col-md-4 control-label">生成内容</label>
+				    <div class="col-md-8">
+				      <input type="checkbox" name="generateContents" checked id="generateContents_model" value="model"/><label for="generateContents_model">Model</label>
+				      <input type="checkbox" name="generateContents" checked id="generateContents_dao" value="dao"/><label for="generateContents_dao">DAO</label>
+				      <input type="checkbox" name="generateContents" checked id="generateContents_service" value="service"/><label for="generateContents_service">Service</label><br/>
+				      <input type="checkbox" name="generateContents" checked id="generateContents_controller" value="controller"/><label for="generateContents_controller">Controller</label>
+				      <input type="checkbox" name="generateContents" checked id="generateContents_mcontroller" value="mcontroller"/><label for="generateContents_mcontroller">MController</label><br/>
+				      <input type="checkbox" name="generateContents" checked id="generateContents_list" value="list"/><label for="generateContents_list">list page</label>
+				      <input type="checkbox" name="generateContents" checked id="generateContents_detail" value="detail"/><label for="generateContents_detail">detail page</label><br/> 
+				    </div>
+				</div>
+				
 			</div>
 			<div class="col-md-4">
 				<div class="form-group">

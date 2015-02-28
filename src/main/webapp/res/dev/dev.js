@@ -215,6 +215,12 @@ var trContent = $('.firstTr').html();
 		$('select[name=queryType]').each(function() {
 			params.queryTypes.push($(this).val());
 		});
+	
+		var generateContents = "";
+		$('input[name=generateContents]:checked').each(function(i) {
+			generateContents += $(this).val() + ",";
+		});
+		params.generateContents = generateContents;
 		
 		return params;
 	}
