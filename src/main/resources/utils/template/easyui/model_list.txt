@@ -42,13 +42,18 @@
 <script>
 var ${model}_toolbar = new Array();
 // 新增按钮
+<sec:authorize ifAnyGranted="${model}.add">
 ${model}_toolbar.push(k_toolbar_add('${model}'));
 ${model}_toolbar.push('-');
+</sec:authorize>
 
 //删除按钮
+<sec:authorize ifAnyGranted="${model}.delete">
 ${model}_toolbar.push(k_toolbar_delete('${model}'));
 ${model}_toolbar.push('-');
+</sec:authorize>
 
+<sec:authorize ifAnyGranted="${model}.update">
 // 修改按钮
 ${model}_toolbar.push({
     text:'修改',
@@ -76,7 +81,6 @@ ${model}_toolbar.push({
                 text:'保存',
                 iconCls:'icon-ok',
                 handler:function(){
-                	alert('hi');
                     $('#${model}_detail_form').form('submit');
                 }
             },{
@@ -89,7 +93,7 @@ ${model}_toolbar.push({
         });
     }
 });
-
+</sec:authorize>
 
 // 初始化 datagrid
 function init() {
