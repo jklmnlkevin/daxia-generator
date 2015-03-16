@@ -99,7 +99,11 @@ var trContent = $('.firstTr').html();
 		realType = realType.replace("_id", "");
 		realType = realType.replace("parent_", "");
 		realType = realType.substring(0, 1).toUpperCase() + realType.substring(1);
-		realType = $('#basePackage').val() + ".model." + realType;
+		if ("User" == realType) {
+			realType = "com.daxia.core.model." + realType;
+		} else {
+			realType = $('#basePackage').val() + ".model." + realType;
+		}
 		console.log("realType = " + realType)
 		
 		return realType;

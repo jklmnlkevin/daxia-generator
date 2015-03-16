@@ -1,0 +1,7 @@
+package ${basePackage}.dto;
+
+import ${basePackage}.model.${Model};
+
+public class ${Model}DTO extends ${Model} {
+	
+}

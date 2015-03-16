@@ -1,14 +1,17 @@
 package ${basePackage}.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ${basePackage}.dao.${Model}DAO;
 import ${basePackage}.model.${Model};
-import ${basePackage}.support.Page;
-import ${basePackage}.util.BeanMapper;
+import ${basePackage}.dto.${Model}DTO;
+import com.daxia.core.support.Page;
+import com.daxia.core.util.BeanMapper;
 
 /**
  * Service层，类要加@Service标识
@@ -30,28 +33,29 @@ public class ${Model}Service {
 	 * @param page
 	 * @return
 	 */
-	public List<${Model}> find(${Model} model, Page page) {
+	public List<${Model}DTO> find(${Model}DTO model, Page page) {
 		List<${Model}> models = ${model}DAO.find(model, page);
-		return models;
+		List<${Model}DTO> dtos = toDTOs(models);
+		return dtos;
 	}
 	
 	public Long create(${Model} model) {
 		return ${model}DAO.create(model);
 	}
 	
-	public ${Model} load(Long id) {
+	public ${Model}DTO load(Long id) {
 	    ${Model} model = ${model}DAO.load(id);
-	    return model;
+	    return toDTO(model);
     }
 
 	/**
 	 * 这个方法会把model所有的字段都赋给model，然后更新model。
 	 * @param model
 	 */
-	public void updateAllFields(${Model} dto) {
-		${Model} model = ${model}DAO.load(dto.getId());
-		BeanMapper.copy(dto, model);
-		${model}DAO.update(model);
+	public void updateAllFields(${Model}DTO dto) {
+		${Model} model = ${Model}DAO.load(dto.getId());
+		toModel(model, dto);
+		${Model}DAO.update(model);
     }
 
 	public void deleteByIds(Long[] ids) {
@@ -66,8 +70,29 @@ public class ${Model}Service {
 		this.deleteByIds(new Long[] {id});
 	}
 
-	public ${Model} findOne(${Model} query) {
+	public ${Model}DTO findOne(${Model}DTO query) {
 		${Model} model = ${model}DAO.findOne(query);
-		return model;
+		return toDTO(model);
+	}
+	
+	private List<${Model}DTO> toDTOs(List<${Model}> models) {
+		if (CollectionUtils.isEmpty(models)) {
+			return new ArrayList<${Model}DTO>(0);
+		}
+		List<${Model}DTO> dtos = new ArrayList<${Model}DTO>(models.size());
+		for (${Model} model : models) {
+	        ${Model}DTO dto = toDTO(model);
+	        dtos.add(dto);
+        }
+	    return dtos;
+    }
+    
+    private ${Model}DTO toDTO(${Model} model) {
+		if (model == null) {
+			return null;
+		}
+		${Model}DTO dto = BeanMapper.map(model, ${Model}DTO.class);
+		
+		return dto;
 	}
 }

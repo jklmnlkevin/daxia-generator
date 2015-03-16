@@ -164,6 +164,7 @@ public class DevController {
             
             if (generateList.contains("model")) {
                 generateTypes.add(GenerateType_K.Model);
+                generateTypes.add(GenerateType_K.ModelDTO);
             }
             if (generateList.contains("dao")) {
                 generateTypes.add(GenerateType_K.ModelDAO);

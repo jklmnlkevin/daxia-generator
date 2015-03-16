@@ -14,10 +14,10 @@ import org.apache.commons.lang3.StringUtils;
         	</#if>
 </#list>        	
 	
-import ${basePackage}.dao.GenericDAOHibernate;
+import com.daxia.core.dao.GenericDAOHibernate;
 import ${basePackage}.model.${Model};
-import ${basePackage}.model.${Model};
-import ${basePackage}.support.Page;
+import ${basePackage}.dto.${Model}DTO;
+import com.daxia.core.support.Page;
 
 /**
  * dao的实现类必须加上@Repository
@@ -35,7 +35,7 @@ public class ${Model}DAO extends GenericDAOHibernate<${Model}> {
      * @param page
      * @return
      */
-    public List<${Model}> find(${Model} dto, Page page) {
+    public List<${Model}> find(${Model}DTO dto, Page page) {
         StringBuilder hql = new StringBuilder();
         List<Object> paras = new ArrayList<Object>();
         hql.append("From ${Model} n where 1 = 1 ");
@@ -82,7 +82,7 @@ public class ${Model}DAO extends GenericDAOHibernate<${Model}> {
      * @param dto
      * @return
      */
-    public ${Model} findOne(${Model} dto) {
+    public ${Model} findOne(${Model}DTO dto) {
 		Page page = new Page();
 		page.setNumPerPage(1);
 		page.setPageNum(1);

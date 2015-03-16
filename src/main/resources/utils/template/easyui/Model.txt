@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import ${basePackage}.model.BaseModel;
+import com.daxia.core.model.BaseModel;
 
 <#list imports as i>
 import ${i};
@@ -28,10 +28,10 @@ public class ${Model} extends BaseModel {
 		<#if mf.types[n_index] == 'java.util.Date'>
 	@DateTimeFormat(pattern = "${mf.dateFormats[n_index]}")	
 		</#if>
-	<#if mf.types[n_index]?contains('${basePackage}')>
+	<#if mf.types[n_index]?contains('com.daxia.')>
 	@ManyToOne
 	@JoinColumn(name = "${mf.dbNames[n_index]}")
-	<#elseif !mf.types[n_index]?contains('${basePackage}')>	
+	<#elseif !mf.types[n_index]?contains('com.daxia.')>	
 	@Column(name = "${mf.dbNames[n_index]}")
 	</#if>    
     private ${shortTypes[n_index]} ${n};

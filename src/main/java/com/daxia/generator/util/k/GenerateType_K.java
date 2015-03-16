@@ -2,6 +2,7 @@ package com.daxia.generator.util.k;
 
 public enum GenerateType_K {
 	Model(0, "xxx", "model"),
+	ModelDTO(0, "xxx", "dto"),
 	ModelDAO(1, "xxx", "dao"),
 	ModelService(1, "xxx", "service"),
 	AdminModelController(1, "xxx", "web/controller/admin"),
