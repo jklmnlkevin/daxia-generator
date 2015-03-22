@@ -53,9 +53,9 @@ public class ${Model}Service {
 	 * @param model
 	 */
 	public void updateAllFields(${Model}DTO dto) {
-		${Model} model = ${Model}DAO.load(dto.getId());
+		${Model} model = ${model}DAO.load(dto.getId());
 		toModel(model, dto);
-		${Model}DAO.update(model);
+		${model}DAO.update(model);
     }
 
 	public void deleteByIds(Long[] ids) {
@@ -94,5 +94,23 @@ public class ${Model}Service {
 		${Model}DTO dto = BeanMapper.map(model, ${Model}DTO.class);
 		
 		return dto;
+	}
+	
+	private void toModel(${Model} model, ${Model}DTO dto) {
+		BeanMapper.copy(dto, model);
+    }
+	
+	@SuppressWarnings("unused")
+	private List<${Model}> toModels(List<${Model}DTO> dtos) {
+		if (CollectionUtils.isEmpty(dtos)) {
+			return new ArrayList<${Model}>(0);
+		}
+		List<${Model}> models = new ArrayList<${Model}>(dtos.size());
+		for (${Model}DTO dto : dtos) {
+	        ${Model} model = new ${Model}();
+	        toModel(model, dto);
+	        models.add(model);
+        }
+		return models;
 	}
 }
