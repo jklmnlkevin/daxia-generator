@@ -77,8 +77,8 @@ public class TemplateUtils {
         File mBaseController = new File(projectPath + "/src/main/java/" + basePackage + "/web/controller/m/MBaseController.java");
         
         String importLine = "import " + _basePackageDot + ".service." + Model + "Service;";
-        String defineLine = "protected {Model}Service  " + model + "Service;\n";
-        String content = "    @Autowired\n    protected {Model}Service  {model}Service;\n";
+        String defineLine = "protected " + Model + "Service " + model + "Service;";
+        String content = "    @Autowired\n    protected {Model}Service {model}Service;\n";
         content = content.replace("{Model}", Model);
         content = content.replace("{model}", model);
         
@@ -105,6 +105,10 @@ public class TemplateUtils {
             }
             if (line.trim().equals(defineLine)) {
                 hasDefine = true;
+            }
+            if (line.contains("student")) {
+                System.out.println(line);
+                System.out.println(defineLine);
             }
         }
         
