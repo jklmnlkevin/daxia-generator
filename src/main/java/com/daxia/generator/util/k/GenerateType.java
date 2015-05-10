@@ -1,6 +1,6 @@
 package com.daxia.generator.util.k;
 
-public enum GenerateType_K {
+public enum GenerateType {
 	Model(0, "xxx", "model"),
 	ModelDTO(0, "xxx", "dto"),
 	ModelDAO(1, "xxx", "dao"),
@@ -15,7 +15,7 @@ public enum GenerateType_K {
 	private String remark;
 	private String packagi;
 
-	private GenerateType_K(int value, String remark, String packagi) {
+	private GenerateType(int value, String remark, String packagi) {
 		this.value = value;
 		this.remark = remark;
 		this.packagi = packagi;
@@ -33,8 +33,8 @@ public enum GenerateType_K {
 		return remark;
 	}
 
-	public GenerateType_K getByValue(int value) {
-		for (GenerateType_K o : GenerateType_K.values()) {
+	public GenerateType getByValue(int value) {
+		for (GenerateType o : GenerateType.values()) {
 			if (o.getValue() == value) {
 				return o;
 			}

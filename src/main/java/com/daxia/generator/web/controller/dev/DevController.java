@@ -20,7 +20,6 @@ import javax.sql.DataSource;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,8 +36,8 @@ import com.daxia.generator.model.RoleAuthority;
 import com.daxia.generator.model.RoleAuthorityDAO;
 import com.daxia.generator.util.dev.JdbcUtils;
 import com.daxia.generator.util.dev.ModelInfo;
-import com.daxia.generator.util.k.GenerateType_K;
-import com.daxia.generator.util.k.TemplateUtils_K;
+import com.daxia.generator.util.k.GenerateType;
+import com.daxia.generator.util.k.TemplateUtils;
 import com.google.common.collect.Lists;
 
 @Controller
@@ -143,7 +142,7 @@ public class DevController {
                 if (t.equals("java.util.Date")) {
                     set.add("org.springframework.format.annotation.DateTimeFormat");
                 }
-                if (t.contains(basePackage)) {
+                if (t.contains("com.daxia.")) {
                     set.add("javax.persistence.JoinColumn");
                     set.add("javax.persistence.ManyToOne");
                 }
@@ -158,32 +157,32 @@ public class DevController {
             map.put("upperNames", upperNames);
             map.put("templateType", templateType);
             
-            List<GenerateType_K> generateTypes = Lists.newArrayList();
+            List<GenerateType> generateTypes = Lists.newArrayList();
             
             List<String> generateList = Arrays.asList(generateContents.split(","));
             
             if (generateList.contains("model")) {
-                generateTypes.add(GenerateType_K.Model);
-                generateTypes.add(GenerateType_K.ModelDTO);
+                generateTypes.add(GenerateType.Model);
+                generateTypes.add(GenerateType.ModelDTO);
             }
             if (generateList.contains("dao")) {
-                generateTypes.add(GenerateType_K.ModelDAO);
+                generateTypes.add(GenerateType.ModelDAO);
             }
             if (generateList.contains("service")) {
-                generateTypes.add(GenerateType_K.ModelService);
+                generateTypes.add(GenerateType.ModelService);
             }
             if (generateList.contains("controller")) {
-                generateTypes.add(GenerateType_K.AdminModelController);
+                generateTypes.add(GenerateType.AdminModelController);
             }
             if (generateList.contains("list")) {
-                generateTypes.add(GenerateType_K.model_list);
+                generateTypes.add(GenerateType.model_list);
             }
             if (generateList.contains("detail")) {
-                generateTypes.add(GenerateType_K.model_detail);
+                generateTypes.add(GenerateType.model_detail);
             }
             // generateTypes.add(GenerateType_K.model_search);
             
-            TemplateUtils_K.generate(generateTypes.toArray(new GenerateType_K[] {}), map, projectPath);
+            TemplateUtils.generate(generateTypes.toArray(new GenerateType[] {}), map, projectPath);
 
             Connection connection = getConnection(db, dbUsername, dbPassword);
             JdbcUtils.connection = connection;

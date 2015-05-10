@@ -39,7 +39,9 @@ public class ${Model}Service {
 		return dtos;
 	}
 	
-	public Long create(${Model} model) {
+	public Long create(${Model}DTO dto) {
+		${Model} model = new ${Model}();
+		toModel(model, dto);
 		return ${model}DAO.create(model);
 	}
 	

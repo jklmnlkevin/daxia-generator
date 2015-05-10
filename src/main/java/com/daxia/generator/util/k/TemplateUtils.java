@@ -18,12 +18,13 @@ import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 
-public class TemplateUtils_K {
+public class TemplateUtils {
     private static String _projectPath;
     private static String _basePackage;
-	public static void generate(GenerateType_K[] generateTypes, Map<String, Object> paramMap, String projectPath) throws Exception {
+    private static String _basePackageDot;
+	public static void generate(GenerateType[] generateTypes, Map<String, Object> paramMap, String projectPath) throws Exception {
 	    _projectPath = projectPath;
-		for (GenerateType_K type : generateTypes) {
+		for (GenerateType type : generateTypes) {
 	        generate(type, paramMap, projectPath);
         }
 		String Model = (String) paramMap.get("Model");
@@ -31,8 +32,9 @@ public class TemplateUtils_K {
 		processBaseController(projectPath, _basePackage, Model, model);
 	}
 	
-	public static void generate(GenerateType_K generateType, Map<String, Object> paramMap, String projectPath) throws Exception {
+	public static void generate(GenerateType generateType, Map<String, Object> paramMap, String projectPath) throws Exception {
 		String basePackage = (String) paramMap.get("basePackage");
+		_basePackageDot = basePackage;
 		basePackage = basePackage.replace(".", "/");
 		
 		_basePackage = basePackage;
@@ -41,7 +43,7 @@ public class TemplateUtils_K {
 		String model = (String) paramMap.get("model");
 		String templateName = generateType.name() + ".txt";
 		
-		//创建一个合适的Configration对象  
+		//创建一个合,适的Configration对象  
         Configuration configuration = new Configuration();
         String templateType = (String) paramMap.get("templateType");
         if (StringUtils.isNotBlank(templateType)) {
@@ -74,28 +76,55 @@ public class TemplateUtils_K {
         File baseController = new File(projectPath + "/src/main/java/com/daxia/core/web/controller/BaseController.java");
         File mBaseController = new File(projectPath + "/src/main/java/" + basePackage + "/web/controller/m/MBaseController.java");
         
+        String importLine = "import " + _basePackageDot + ".service." + Model + "Service;";
+        String defineLine = "protected {Model}Service  " + model + "Service;\n";
         String content = "    @Autowired\n    protected {Model}Service  {model}Service;\n";
         content = content.replace("{Model}", Model);
         content = content.replace("{model}", model);
         
-        insertService(baseController, content);
-        insertService(mBaseController, content);
+        insertServiceAndImport(baseController, content, importLine, defineLine, basePackage);
+        insertServiceAndImport(mBaseController, content, importLine, defineLine, basePackage);
     }
     
-    private static void insertService(File file, String content) throws Exception {
+    private static void insertServiceAndImport(File file, String content, String importLine, String defineLine, String basePackage) throws Exception {
         BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-        String line = null;
         List<String> list = new ArrayList<String>();
-        while ((line = reader.readLine()) != null) {
-            if (line.contains(" class ") && line.contains("public")) {
-                list.add(line);
-                System.out.println(line);
-                list.add(content);
-            } else {
-                list.add(line);
+        List<String> tmpList = new ArrayList<String>();
+        {
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                tmpList.add(line);
+            }
+            reader.close();
+        }
+        boolean hasImport = false;
+        boolean hasDefine = false;
+        for (String line : tmpList) {
+            if (line.trim().equals(importLine)) {
+                hasImport = true;
+            }
+            if (line.trim().equals(defineLine)) {
+                hasDefine = true;
             }
         }
-        reader.close();
+        
+        for (String line : tmpList) {
+            list.add(line);
+            if (line.contains(" class ") && line.contains("public")) {
+                if (!hasDefine) { // 如果没定义过
+                    list.add(content);
+                    hasDefine = true;
+                }
+            }
+            
+            if (line.trim().startsWith("import " + _basePackageDot)) {
+                System.out.println(line);
+                if (!hasImport) {
+                    list.add(importLine);
+                    hasImport = true;
+                }
+            }
+        }
         
         FileWriter writer = new FileWriter(file);
         for (String str : list) {
