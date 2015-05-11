@@ -42,7 +42,7 @@ import com.google.common.collect.Lists;
 
 @Controller
 @RequestMapping(value = "/dev", produces="text/html;charset=UTF-8") // produces是为了解决@ResponseBody返回乱码
-public class DevController {
+public class GenerateController {
 	
 	// key: dbName
 	private Map<String, BasicDataSource> dsMap = new HashMap<String, BasicDataSource>();

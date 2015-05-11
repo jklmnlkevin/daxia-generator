@@ -108,8 +108,14 @@ function init() {
 	        {field:'id',title:'ID',width:50},
 	        <#list mf.shortComments as c>
 				<#if c != 'id'>
-		        {field:'${mf.names[c_index]}',title:'${c}',width:100,align:'center'}<#if c_has_next>,</#if>
-				</#if>	
+					<#if mf.types[c_index]?contains('com.daxia.')>
+	            		<#if mf.modelDisplayFields[c_index]!=''>
+	        {field:'${mf.names[c_index]}.${mf.modelDisplayFields[c_index]}',title:'${c}',width:100,align:'center'}<#if c_has_next>,</#if>		
+	            		</#if>
+	            	<#elseif !mf.types[c_index]?contains('com.daxia.')>
+	        {field:'${mf.names[c_index]}',title:'${c}',width:100,align:'center'}<#if c_has_next>,</#if>	
+            		</#if>
+				</#if>
 			</#list>
 	    ]],
 	    toolbar: ${model}_toolbar,

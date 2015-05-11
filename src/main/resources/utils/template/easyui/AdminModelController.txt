@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-// import ${basePackage}.common.Module;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
 import ${basePackage}.dto.${Model}DTO;
 import ${basePackage}.service.${Model}Service;
 
@@ -87,18 +89,28 @@ public class Admin${Model}Controller extends BaseController {
 		return "admin/${model}/${model}_list";
 	}
 	
-	/**
-	 * 用于查找带回的
-	 * @return
-	 * @throws Exception
-	 */
-    @RequestMapping("search")
-	public String search(${Model}DTO query, Map<String, Object> map, Page page) {
-		List<${Model}DTO> dtos = ${model}Service.find(query, page);
-		// 这个数据是用来展示的
-		map.put("list", dtos);
-		// 这个数据是保存查询条件的
-		map.put("query", query);
-		return "admin/${model}/${model}_search";
-	}
+	@ResponseBody
+	@RequestMapping(value = "/datagrid")
+    @PreAuthorize("hasRole('${model}.list')")
+    public String datagrid(${Model}DTO dto, Map<String, Object> map, Page page) throws Exception {
+        List<${Model}DTO> dtos = ${model}Service.find(dto, page);
+        JSONArray jsonArray = new JSONArray();
+        for (${Model}DTO ${model} : dtos) {
+            JSONObject jsonObject = new JSONObject();
+            <#list mf.names as n>
+	            <#if mf.types[n_index]?contains('com.daxia.')>
+	            	<#if mf.modelDisplayFields[n_index]!=''>
+	        jsonObject.put("${n}.${mf.modelDisplayFields[n_index]}", ${model}.get${upperNames[n_index]}().get${mf.modelDisplayFields[n_index]?cap_first}());    	
+	            	</#if>
+	            <#elseif !mf.types[n_index]?contains('com.daxia.')>
+            jsonObject.put("${n}", ${model}.get${upperNames[n_index]}());
+            	</#if>
+            </#list>
+            jsonArray.add(jsonObject);
+        }
+        JSONObject json = new JSONObject();
+        json.put("total", page.getTotalRecords());
+        json.put("rows", jsonArray);
+        return json.toJSONString();
+    }
 }
