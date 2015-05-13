@@ -45,7 +45,7 @@ public class Admin${Model}Controller extends BaseController {
 	public String detail(Map<String, Object> map, Long id) {
 		if (id != null) {
 			${Model}DTO dto = ${model}Service.load(id);
-			map.put("n", dto);
+			map.put("model", dto);
 		}
 		return "admin/${model}/${model}_detail";
 	}
@@ -103,7 +103,11 @@ public class Admin${Model}Controller extends BaseController {
 	        jsonObject.put("${n}.${mf.modelDisplayFields[n_index]}", ${model}.get${upperNames[n_index]}().get${mf.modelDisplayFields[n_index]?cap_first}());    	
 	            	</#if>
 	            <#elseif !mf.types[n_index]?contains('com.daxia.')>
+	            	<#if mf.dateFormats[n_index] != ''>
+			jsonObject.put("${n}", formatDate(${model}.get${upperNames[n_index]}(), "${mf.dateFormats[n_index]}"));	            	
+	            	<#elseif mf.dateFormats[n_index] == ''>
             jsonObject.put("${n}", ${model}.get${upperNames[n_index]}());
+	            	</#if>
             	</#if>
             </#list>
             jsonArray.add(jsonObject);

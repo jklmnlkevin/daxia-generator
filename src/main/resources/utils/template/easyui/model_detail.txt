@@ -23,7 +23,7 @@
 							<#if mf.dateFormats[na_index] != ''>
 									<td>${mf.shortComments[na_index]}:</td>
 									<td>
-										<input type="text" name="${na}" class="easyui-datebox" dateFmt="${mf.dateFormats[na_index]}" value="<fmt:formatDate value='${'$'}{model.${na} }' pattern='${mf.dateFormats[na_index]}'/>" size="30" readonly/>
+										<input type="text" name="${na}" class="easyui-datebox" dateFmt="${mf.dateFormats[na_index]}" value="<fmt:formatDate value='${'$'}{model.${na} }' pattern='${mf.dateFormats[na_index]}'/>" size="30"/>
 									</td>
 							<#elseif mf.isModel[na_index]>
 									<label>${mf.shortComments[na_index]}:</label>

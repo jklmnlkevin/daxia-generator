@@ -70,7 +70,7 @@ ${model}_toolbar.push({
     	}
     	
     	$('#dd').dialog({
-            title: '新增记录',
+            title: '修改记录',
             width: 600,
             height: 300,
             closed: false,
@@ -81,7 +81,13 @@ ${model}_toolbar.push({
                 text:'保存',
                 iconCls:'icon-ok',
                 handler:function(){
-                    $('#${model}_detail_form').form('submit');
+                    $('#${model}_detail_form').form('submit', { success: function(data) {
+                		var ok = k_success(data);
+                		if (ok) {
+                			$('#dd').dialog('close');
+    	                    $('#${model}_datagrid').datagrid('reload');
+                		}
+                	} });
                 }
             },{
                 text:'取消',
