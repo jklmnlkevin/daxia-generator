@@ -1,1 +1,1 @@
-cd .. && mvn compile && mvn exec:java -Dexec.mainClass="com.daxia.generator.cmd.DeployScriptGenerator" -Dexec.classpathScope=runtime && pause
+cd ../../ && mvn compile && mvn exec:java -Dexec.mainClass="com.daxia.generator.cmd.DeployScriptGenerator" -Dexec.classpathScope=runtime && pause
