@@ -1,0 +1,18 @@
+windows 64位
+========================================
+jdk1.7:
+http://pan.baidu.com/s/1jG9t76I
+
+mysql 5.5.30:
+http://pan.baidu.com/s/1c00Im9i
+
+maven 2.2.1:
+http://pan.baidu.com/s/1jGw2r8E
+
+svn slik 1.7.8:
+http://pan.baidu.com/s/1ntIaSAH
+
+tomcat 7:
+http://pan.baidu.com/s/1c02emxM
+
+
