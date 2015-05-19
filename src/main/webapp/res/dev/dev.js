@@ -92,6 +92,9 @@ var trContent = $('.firstTr').html();
 	}
 	
 	function convertType(type, column) {
+		if (column.toLowerCase().indexOf("money") != -1) {
+			return "java.math.BigDecimal";
+		}
 		if (column.indexOf("_") == -1) {
 			return type;
 		}

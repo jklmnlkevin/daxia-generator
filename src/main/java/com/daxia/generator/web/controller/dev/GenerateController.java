@@ -49,13 +49,6 @@ public class GenerateController {
 	
 	@RequestMapping("index")
 	public String index(HttpServletRequest request, Map<String, Object> map) {
-		/*Cookie[] cookies = request.getCookies();
-		if (cookies != null) {
-			for (Cookie cookie : cookies) {
-				map.put(cookie.getName(), cookie.getValue());
-	        }
-		}
-				*/
 		return "dev/dev_index";
 	}
 	

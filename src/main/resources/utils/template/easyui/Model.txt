@@ -42,7 +42,11 @@ public class ${Model} extends BaseModel {
 	 * 获取值：${mf.comments[n_index]}
 	 */
 	public ${shortTypes[n_index]} get${upperNames[n_index]}() {
+	    <#if shortTypes[n_index] == 'BigDecimal'>
+	    return moneyValue(${n});
+	    <#elseif shortTypes[n_index] != 'BigDecimal'>
     	return ${n};
+	    </#if>
     }
 	
 	/** 
