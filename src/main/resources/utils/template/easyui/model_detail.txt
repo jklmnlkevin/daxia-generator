@@ -26,10 +26,10 @@
 										<input type="text" name="${na}" class="easyui-datebox" dateFmt="${mf.dateFormats[na_index]}" value="<fmt:formatDate value='${'$'}{model.${na} }' pattern='${mf.dateFormats[na_index]}'/>" size="30"/>
 									</td>
 							<#elseif mf.isModel[na_index]>
-									<label>${mf.shortComments[na_index]}:</label>
-									<input type="hidden" name="${na}.id" bringBackName="${na}.id" value="${'$'}{model.${na}.id }" size="30" />
-									<input type="text" bringBackName="${na}.${mf.modelDisplayFields[na_index]}" value="${'$'}{model.${na}.${mf.modelDisplayFields[na_index]} }" size="30"  lookupGroup="${na}" readonly="readonly"/>
-									<a class="btnLook" href="${'$'}{ctx }/admin/${na}/search?onlyFindType=0" lookupGroup="${na}"></a>
+									<td>${mf.shortComments[na_index]}:</td>
+									<td>
+									<input type="text" name="${na}.id" bringBackName="${na}.id" value="${'$'}{model.${na}.id }" size="30" class="easyui-textbox"/>
+									</td>
 							<#else>
 									<td>${mf.shortComments[na_index]}:</td>
 									<td>

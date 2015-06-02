@@ -33,5 +33,4 @@ public class ModelField {
 	public void setComment(String comment) {
     	this.comment = comment;
     }
-	
 }
